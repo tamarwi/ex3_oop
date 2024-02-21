@@ -11,23 +11,25 @@ public class SubImgCharMatcher{
     public char getCharByImageBrightness(double brightness){
         int right = this.sortedCharBrightnessPairList.size();
         int left = 0;
+        double maxBrightness = this.sortedCharBrightnessPairList.get(right-1).getKey();
+        double minBrightness = this.sortedCharBrightnessPairList.get(0).getKey();
         while (left <= right) {
             int mid = left + (right - left) / 2;
 
             // Check if brightness is present at mid
-            if (this.sortedCharBrightnessPairList.get(mid).getKey() == brightness)
+            if (getLinearBrightnessByIndex(mid, Brightness, maxBrightness) == brightness)
                 return this.sortedCharBrightnessPairList.get(mid).getValue();
 
             // If brightness greater, ignore left half
-            if (this.sortedCharBrightnessPairList.get(mid).getKey() < brightness)
+            if (getLinearBrightnessByIndex(mid, Brightness, maxBrightness) < brightness)
                 left = mid + 1;
 
                 // If brightness is smaller, ignore right half
             else
                 right = mid - 1;
         }
-        double leftDistance = Math.abs(brightness - this.sortedCharBrightnessPairList.get(left).getKey());
-        double rightDistance = Math.abs(brightness - this.sortedCharBrightnessPairList.get(right).getKey());
+        double leftDistance = Math.abs(brightness - getLinearBrightnessByIndex(left, Brightness, maxBrightness));
+        double rightDistance = Math.abs(brightness - getLinearBrightnessByIndex(right, Brightness, maxBrightness));
         if(leftDistance < rightDistance){
             return this.sortedCharBrightnessPairList.get(left).getValue();
         }
@@ -49,6 +51,10 @@ public class SubImgCharMatcher{
         assert this.sortedCharBrightnessPairList.remove(brightnessCharPair); //TODO: remove assert
     }
 
+    private void linearizeBrightnessList(){
+        //should be used to increase efficiency
+    }
+
     private double calculateNonLinearBrightness(char c){
         boolean[][] arr = CharConverter.convertToBoolArray(c);
         int numTrue = 0;
@@ -61,5 +67,10 @@ public class SubImgCharMatcher{
         }
 
         return numTrue / (CharConverter.DEFAULT_PIXEL_RESOLUTION * CharConverter.DEFAULT_PIXEL_RESOLUTION);
+    }
+
+    private double getLinearBrightnessByIndex(int ind, double minBrightness, double maxBrightness){
+        double charBrightness = this.sortedCharBrightnessPairList.get(ind).getKey();
+        return (charBrightness - minBrightness) / (maxBrightness - minBrightness);
     }
 }
