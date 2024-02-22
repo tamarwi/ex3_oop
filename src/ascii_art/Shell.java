@@ -30,6 +30,7 @@ public class Shell {
     /***************** CONSTANTS *****************/
     private static final int COMMAND_WORD_INDEX = 0;
     private static final int COMMAND_PARAMS_INDEX = 1;
+    private static final int CHANGE_RESOLUTION_FACTOR = 2;
 
     /*********** CLASS FIELDS *******************/
     private List<Character> chars;
@@ -65,10 +66,12 @@ public class Shell {
                 if (commandWords[COMMAND_WORD_INDEX].equals(ADD_CHAR_COMMAND)) {
                     addChar(commandWords[COMMAND_PARAMS_INDEX]);
                 }
+                if(commandWords[COMMAND_WORD_INDEX].equals(REMOVE_CHAR_COMMAND)){
+                    removeChar(commandWords[COMMAND_PARAMS_INDEX]);
+                }
             } catch (InvalidCharToAddException e) {
                 System.out.println("ncjfkd");
             }
-
         } else {
             System.out.println("Did not execute due to incorrect command.");
         }
@@ -114,34 +117,48 @@ public class Shell {
                 string.charAt(1) == '-';
     }
 
-    private void removeChar(String charsToRemove) {
+    private void removeChar(String charsToRemove) throws InvalidCharToRemoveException{
         if (chars.equals("all")) {
             for (int i = 32; i < 127; i++) {
                 chars.remove((char) i);
             }
         } else if (chars.equals("space")) {
-            chars.add(' ');
+            chars.remove(' ');
         } else if (isCharRange(charsToRemove)){
             char smaller = charsToRemove.charAt(0) < charsToRemove.charAt(2)? charsToRemove.charAt(0):charsToRemove.charAt(2);
             char bigger = charsToRemove.charAt(0) < charsToRemove.charAt(2)? charsToRemove.charAt(2):charsToRemove.charAt(0);
 
             for(int i = smaller; i <= bigger; i++){
-                chars.add((char) i);
+                chars.remove((char) i);
             }
         }
         else if(charsToRemove.length() == 1 && Character.isLetter(charsToRemove.charAt(0))){
-            chars.add(charsToRemove.charAt(0));
+            chars.remove(charsToRemove.charAt(0));
         }
         else{
-            throw new InvalidCharToAddException("");
+            throw new InvalidCharToRemoveException("");
         }
     }
 
-    private void changeImgResolution(String changeResolutionCommand) {
-        String[] commandWords = changeResolutionCommand.split("\\s+");
-        if (commandWords < 2)
-
-
+    private void changeImgResolution(String changeResolutionCommand) throws InvalidResolutionException{
+        int minCharsInRow = Math.max(1, image.getWidth() / image.getHeight());
+        if(changeResolutionCommand.equals("up")){
+            if((imageResolution * CHANGE_RESOLUTION_FACTOR > image.getWidth()) ||
+                    (imageResolution * CHANGE_RESOLUTION_FACTOR < minCharsInRow))
+            {
+                throw new InvalidResolutionException("");
+            }
+            imageResolution *= CHANGE_RESOLUTION_FACTOR;
+        }
+        if(changeResolutionCommand.equals("down")){
+            if((imageResolution / CHANGE_RESOLUTION_FACTOR > image.getWidth()) ||
+                    (imageResolution / CHANGE_RESOLUTION_FACTOR < minCharsInRow))
+            {
+                throw new InvalidResolutionException("");
+            }
+            imageResolution /= CHANGE_RESOLUTION_FACTOR;
+        }
+        System.out.println("Resolution set to %d".formatted(imageResolution));
     }
 
     private void changeImg(String changeImgCommand) {
