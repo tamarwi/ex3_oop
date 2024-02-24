@@ -36,7 +36,7 @@ public class Shell {
     private static final String COMMAND_PROMPT_STRING = "<<<";
 
     /*********** CLASS FIELDS *******************/
-    private List<Character> chars;
+    private List<Character> chars; //TODO: change to CharConverter
     private Image image;
     private AsciiOutput asciiOutput;
     private int imageResolution;
@@ -193,7 +193,7 @@ public class Shell {
     }
 
     private void runAsciiArtAlgorithm() {
-        AsciiArtAlgorithm asciiArtAlgorithm = new AsciiArtAlgorithm(); //TODO CHANGE TO CORRECT CTOR
+        //AsciiArtAlgorithm asciiArtAlgorithm = new AsciiArtAlgorithm(); //TODO CHANGE TO CORRECT CTOR
     }
 
 }
