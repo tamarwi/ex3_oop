@@ -3,21 +3,21 @@ package image_char_matching;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class SubImgCharMatcher {
+public class SubImgCharMatcher{
     private final ArrayList<CharBrightness> sortedCharBrightnessList;
     private double minBrightness;
     private double maxBrightness;
 
-    public SubImgCharMatcher(char[] charset) {
+    public SubImgCharMatcher(char[] charset){
         this.sortedCharBrightnessList = new ArrayList<CharBrightness>();
         this.minBrightness = 1;
         this.maxBrightness = -1;
-        for (char c : charset) {
+        for(char c: charset){
             addChar(c);
         }
     }
 
-    public char getCharByImageBrightness(double brightness) {
+    public char getCharByImageBrightness(double brightness){
         int right = this.sortedCharBrightnessList.size();
         int left = 0;
         while (left <= right) {
@@ -40,47 +40,48 @@ public class SubImgCharMatcher {
         double rightBrightness = this.sortedCharBrightnessList.get(right).getLinearBrightness();
         double leftDistance = Math.abs(brightness - leftBrightness);
         double rightDistance = Math.abs(brightness - rightBrightness);
-        if (leftDistance < rightDistance) {
+        if(leftDistance < rightDistance){
             return this.sortedCharBrightnessList.get(left).getCharacter();
-        } else {
+        }
+        else{
             return this.sortedCharBrightnessList.get(right).getCharacter();
         }
     }
 
-    public void addChar(char c) {
+    public void addChar(char c){
         CharBrightness charBrightness = new CharBrightness(c);
         this.sortedCharBrightnessList.add(charBrightness);
         Collections.sort(this.sortedCharBrightnessList);
 
-        if (charBrightness.getNonLinearBrightness() > this.maxBrightness ||
-                charBrightness.getNonLinearBrightness() < this.minBrightness) {
+        if(charBrightness.getNonLinearBrightness() > this.maxBrightness ||
+                charBrightness.getNonLinearBrightness() < this.minBrightness){
             linearizeBrightnessList();
         }
     }
 
-    public void removeChar(char c) {
+    public void removeChar(char c){
         CharBrightness charBrightness = new CharBrightness(c);
-        this.sortedCharBrightnessList.remove(charBrightness);
+        this.sortedCharBrightnessList.remove(charBrightness); //TODO: remove assert
 
-        if (charBrightness.getNonLinearBrightness() == this.maxBrightness ||
-                charBrightness.getNonLinearBrightness() == this.minBrightness) {
+        if(charBrightness.getNonLinearBrightness() == this.maxBrightness ||
+                charBrightness.getNonLinearBrightness() == this.minBrightness){
             linearizeBrightnessList();
         }
     }
 
-    private void linearizeBrightnessList() {
+    private void linearizeBrightnessList(){
         //should be used to increase efficiency
         this.minBrightness = this.sortedCharBrightnessList.getFirst().getNonLinearBrightness();
         this.maxBrightness = this.sortedCharBrightnessList.getLast().getNonLinearBrightness();
-        for (CharBrightness charBrightness : this.sortedCharBrightnessList) {
+        for(CharBrightness charBrightness: this.sortedCharBrightnessList){
             charBrightness.updateLinearBrightness(minBrightness, maxBrightness);
         }
     }
 
-    public ArrayList<Character> getSortedCharAlphabeticallyList() {
+    public ArrayList<Character> getSortedCharAlphabeticallyList(){
 
         ArrayList<Character> copyCharList = new ArrayList<Character>();
-        for (CharBrightness charBrightness : sortedCharBrightnessList) {
+        for(CharBrightness charBrightness: sortedCharBrightnessList){
             copyCharList.add(charBrightness.getCharacter());
         }
 
