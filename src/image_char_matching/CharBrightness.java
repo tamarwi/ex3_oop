@@ -58,6 +58,7 @@ public class CharBrightness implements Comparable<CharBrightness>{
         if(!(o instanceof CharBrightness)){
             return false;
         }
+        System.out.println("entered");
         return ((CharBrightness)o).character == this.character;
     }
 }

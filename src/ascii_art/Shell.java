@@ -99,9 +99,9 @@ public class Shell {
 
     private void showChars() { //TODO: fix
         //Collections.sort(chars);
-        //for (char character : chars) {
-            //System.out.print("%c ".formatted(character));
-        //}
+        for (char character : chars.getSortedCharAlphabeticallyList()) {
+            System.out.print("%c ".formatted(character));
+        }
         System.out.println();
     }
 
