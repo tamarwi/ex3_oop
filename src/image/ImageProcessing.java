@@ -20,8 +20,8 @@ public class ImageProcessing{
         Color[][] pixelArray = new Color[newImageHeight][newImageWidth];
         for (int i = 0; i < newImageHeight; i++) {
             for (int j = 0; j < newImageWidth; j++) {
-                if((heightDiff/2 <= i && i <= newImageHeight - heightDiff/2) &&
-                        (widthDiff/2 <= j && j <= newImageWidth - widthDiff/2)){
+                if((heightDiff/2 <= i && i < newImageHeight - heightDiff/2) &&
+                        (widthDiff/2 <= j && j < newImageWidth - widthDiff/2)){
                     pixelArray[i][j]=image.getPixel(i-heightDiff/2, j-widthDiff/2);
                 }
                 else{

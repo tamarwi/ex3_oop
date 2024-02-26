@@ -186,14 +186,15 @@ public class Shell {
     }
 
     private void changeOutputMethod(String changeOutputCommand) {
-        String[] commandWords = changeOutputCommand.split("\\s+");
-        if (commandWords.length < 2) {
-            System.out.println("Did not change output method due to incorrect format.");
-            return;
-        }
+//        String[] commandWords = changeOutputCommand.split("\\s+");
+//        if (commandWords.length < 2) {
+//            System.out.println("Did not change output method due to incorrect format.");
+//            return;
+//        }
 
         AsciiOutputFactory asciiOutputFactory = new AsciiOutputFactory();
-        asciiOutput = asciiOutputFactory.createAsciiOutput(commandWords[1], new String[]{"out.html", "Courier New"});
+        asciiOutput = asciiOutputFactory.createAsciiOutput(changeOutputCommand, new String[]{
+                "out.html", "Courier New"});
     }
 
     private void runAsciiArtAlgorithm() {
