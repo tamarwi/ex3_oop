@@ -169,7 +169,7 @@ public class Shell {
             }
             imageResolution /= CHANGE_RESOLUTION_FACTOR;
         }
-        System.out.println("Resolution set to" + Integer.toString(imageResolution));
+        System.out.println("Resolution set to " + Integer.toString(imageResolution));
     }
 
     private void changeImg(String changeImgCommand) {
