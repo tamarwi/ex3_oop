@@ -3,6 +3,8 @@ package ascii_art;
 import ascii_output.AsciiOutput;
 import ascii_output.ConsoleAsciiOutput;
 import image.Image;
+import image_char_matching.CharConverter;
+import image_char_matching.SubImgCharMatcher;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -23,8 +25,8 @@ public class Shell {
 
     /*********** DEFAULT VALUES CONSTANTS *******************/
     private static final String DEFAULT_IMAGE = "cat.jpeg";
-    private static final List<Character> DEFAULT_CHAR_SET = List.of('0', '1', '2', '3', '4',
-            '5', '6', '7', '8', '9');
+    private static final char[] DEFAULT_CHAR_SET = {'0', '1', '2', '3', '4',
+            '5', '6', '7', '8', '9'};
     private static final int DEFAULT_IMAGE_RESOLUTION = 128;
     private static final AsciiOutput DEFAULT_ASCII_OUTPUT = new ConsoleAsciiOutput();
     /***************** CONSTANTS *****************/
@@ -36,7 +38,7 @@ public class Shell {
     private static final String COMMAND_PROMPT_STRING = "<<<";
 
     /*********** CLASS FIELDS *******************/
-    private List<Character> chars; //TODO: change to CharConverter
+    private final SubImgCharMatcher chars;
     private Image image;
     private AsciiOutput asciiOutput;
     private int imageResolution;
@@ -44,7 +46,7 @@ public class Shell {
     /*******************************************************/
 
     public Shell() throws IOException {
-        chars = DEFAULT_CHAR_SET;
+        chars = new SubImgCharMatcher(DEFAULT_CHAR_SET);
         image = new Image(DEFAULT_IMAGE);
         asciiOutput = DEFAULT_ASCII_OUTPUT;
         imageResolution = DEFAULT_IMAGE_RESOLUTION;
@@ -86,6 +88,8 @@ public class Shell {
                 }
             } catch (InvalidCharToAddException e) {
                 System.out.println("ncjfkd");
+            } catch (Exception e){ //TODO: remove
+
             }
         } else {
             System.out.println("Did not execute due to incorrect command.");
@@ -93,30 +97,30 @@ public class Shell {
 
     }
 
-    private void showChars() {
-        Collections.sort(chars);
-        for (char character : chars) {
-            System.out.print("%c ".formatted(character));
-        }
+    private void showChars() { //TODO: fix
+        //Collections.sort(chars);
+        //for (char character : chars) {
+            //System.out.print("%c ".formatted(character));
+        //}
         System.out.println();
     }
 
     private void addChar(String charsToAdd) throws InvalidCharToAddException {
-        if (chars.equals("all")) {
+        if (charsToAdd.equals("all")) {
             for (int i = MIN_CHAR_VALUE; i <= MAX_CHAR_VALUE; i++) {
-                chars.add((char) i);
+                chars.addChar((char) i);
             }
-        } else if (chars.equals("space")) {
-            chars.add(' ');
+        } else if (charsToAdd.equals("space")) {
+            chars.addChar(' ');
         } else if (isCharRange(charsToAdd)) {
             char smaller = charsToAdd.charAt(0) < charsToAdd.charAt(2) ? charsToAdd.charAt(0) : charsToAdd.charAt(2);
             char bigger = charsToAdd.charAt(0) < charsToAdd.charAt(2) ? charsToAdd.charAt(2) : charsToAdd.charAt(0);
 
             for (int i = smaller; i <= bigger; i++) {
-                chars.add((char) i);
+                chars.addChar((char) i);
             }
         } else if (charsToAdd.length() == 1 && Character.isLetter(charsToAdd.charAt(0))) {
-            chars.add(charsToAdd.charAt(0));
+            chars.addChar(charsToAdd.charAt(0));
         } else {
             throw new InvalidCharToAddException("");
         }
@@ -131,12 +135,12 @@ public class Shell {
     }
 
     private void removeChar(String charsToRemove) throws InvalidCharToRemoveException {
-        if (chars.equals("all")) {
+        if (charsToRemove.equals("all")) {
             for (int i = MIN_CHAR_VALUE; i < MAX_CHAR_VALUE; i++) {
-                chars.remove((char) i);
+                chars.removeChar((char) i);
             }
-        } else if (chars.equals("space")) {
-            chars.remove(' ');
+        } else if (charsToRemove.equals("space")) {
+            chars.removeChar(' ');
         } else if (isCharRange(charsToRemove)) {
             char smaller = charsToRemove.charAt(0) < charsToRemove.charAt(2) ?
                     charsToRemove.charAt(0) : charsToRemove.charAt(2);
@@ -144,10 +148,10 @@ public class Shell {
                     charsToRemove.charAt(2) : charsToRemove.charAt(0);
 
             for (int i = smaller; i <= bigger; i++) {
-                chars.remove((char) i);
+                chars.removeChar((char) i);
             }
         } else if (charsToRemove.length() == 1 && Character.isLetter(charsToRemove.charAt(0))) {
-            chars.remove(charsToRemove.charAt(0));
+            chars.removeChar(charsToRemove.charAt(0));
         } else {
             throw new InvalidCharToRemoveException("");
         }
@@ -193,7 +197,8 @@ public class Shell {
     }
 
     private void runAsciiArtAlgorithm() {
-        //AsciiArtAlgorithm asciiArtAlgorithm = new AsciiArtAlgorithm(); //TODO CHANGE TO CORRECT CTOR
+        AsciiArtAlgorithm asciiArtAlgorithm = new AsciiArtAlgorithm(image, imageResolution, chars);
+        asciiOutput.out(asciiArtAlgorithm.run());
     }
 
 }
