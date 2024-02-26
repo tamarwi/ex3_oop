@@ -25,7 +25,7 @@ public class CharBrightness implements Comparable<CharBrightness>{
                 }
             }
         }
-        return (double) numTrue / (CharConverter.DEFAULT_PIXEL_RESOLUTION *
+        return (double) (numTrue) / (CharConverter.DEFAULT_PIXEL_RESOLUTION *
                 CharConverter.DEFAULT_PIXEL_RESOLUTION);
     }
 

@@ -47,7 +47,7 @@ public class Shell {
 
     public Shell() throws IOException {
         chars = new SubImgCharMatcher(DEFAULT_CHAR_SET);
-        image = new Image("src/cat.jpeg");//DEFAULT_IMAGE);
+        image = new Image(DEFAULT_IMAGE);
         asciiOutput = DEFAULT_ASCII_OUTPUT;
         imageResolution = DEFAULT_IMAGE_RESOLUTION;
     }
@@ -171,13 +171,12 @@ public class Shell {
             }
             imageResolution /= CHANGE_RESOLUTION_FACTOR;
         }
-        System.out.println("Resolution set to %d".formatted(imageResolution));
+        System.out.println("Resolution set to" + Integer.toString(imageResolution));
     }
 
     private void changeImg(String changeImgCommand) {
-        String[] commandWords = changeImgCommand.split("\\s+");
         try {
-            image = new Image(commandWords[1]);
+            image = new Image(changeImgCommand);
         } catch (IOException e) {
             System.out.println("Did not execute due to problem with image file.");
         }

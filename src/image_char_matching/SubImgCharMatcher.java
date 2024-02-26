@@ -60,6 +60,8 @@ public class SubImgCharMatcher{
         if(charBrightness.getNonLinearBrightness() > this.maxBrightness ||
                 charBrightness.getNonLinearBrightness() < this.minBrightness){
             linearizeBrightnessList();
+        }else{
+            charBrightness.updateLinearBrightness(minBrightness, maxBrightness);
         }
     }
 
