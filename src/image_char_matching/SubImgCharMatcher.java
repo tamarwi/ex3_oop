@@ -50,7 +50,7 @@ public class SubImgCharMatcher{
 
     public void addChar(char c){
         CharBrightness charBrightness = new CharBrightness(c);
-        if(this.sortedCharBrightnessList.indexOf(charBrightness) != -1)
+        if(this.sortedCharBrightnessList.contains(charBrightness))
         {
             return;
         }

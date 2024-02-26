@@ -65,30 +65,25 @@ public class Shell {
         if (commandWords.length == 1) {
             if (commandWords[COMMAND_WORD_INDEX].equals(SHOW_CHARS_COMMAND)) {
                 showChars();
-            }
-            else if (commandWords[COMMAND_WORD_INDEX].equals(RUN_ALGORITHM_COMMAND)) {
+            } else if (commandWords[COMMAND_WORD_INDEX].equals(RUN_ALGORITHM_COMMAND)) {
                 runAsciiArtAlgorithm();
             }
         } else if (commandWords.length == 2) {
             try {
                 if (commandWords[COMMAND_WORD_INDEX].equals(ADD_CHAR_COMMAND)) {
                     addChar(commandWords[COMMAND_PARAMS_INDEX]);
-                }
-                else if (commandWords[COMMAND_WORD_INDEX].equals(REMOVE_CHAR_COMMAND)) {
+                } else if (commandWords[COMMAND_WORD_INDEX].equals(REMOVE_CHAR_COMMAND)) {
                     removeChar(commandWords[COMMAND_PARAMS_INDEX]);
-                }
-                else if (commandWords[COMMAND_WORD_INDEX].equals(CHANGE_IMG_RESOLUTION_COMMAND)) {
+                } else if (commandWords[COMMAND_WORD_INDEX].equals(CHANGE_IMG_RESOLUTION_COMMAND)) {
                     changeImgResolution(commandWords[COMMAND_PARAMS_INDEX]);
-                }
-                else if (commandWords[COMMAND_WORD_INDEX].equals(CHANGE_IMG_COMMAND)) {
+                } else if (commandWords[COMMAND_WORD_INDEX].equals(CHANGE_IMG_COMMAND)) {
                     changeImg(commandWords[COMMAND_PARAMS_INDEX]);
-                }
-                else if (commandWords[COMMAND_WORD_INDEX].equals(CHANGE_OUTPUT_METHOD_COMMAND)) {
+                } else if (commandWords[COMMAND_WORD_INDEX].equals(CHANGE_OUTPUT_METHOD_COMMAND)) {
                     changeOutputMethod(commandWords[COMMAND_PARAMS_INDEX]);
                 }
             } catch (InvalidCharToAddException e) {
                 System.out.println("ncjfkd");
-            } catch (Exception e){ //TODO: remove
+            } catch (Exception e) { //TODO: remove
 
             }
         } else {
@@ -119,7 +114,8 @@ public class Shell {
             for (int i = smaller; i <= bigger; i++) {
                 chars.addChar((char) i);
             }
-        } else if (charsToAdd.length() == 1 && Character.isLetter(charsToAdd.charAt(0))) {
+        } else if (charsToAdd.length() == 1 && (charsToAdd.charAt(0) >= MIN_CHAR_VALUE) &&
+                (charsToAdd.charAt(0) <= MAX_CHAR_VALUE)) {
             chars.addChar(charsToAdd.charAt(0));
         } else {
             throw new InvalidCharToAddException("");
@@ -150,7 +146,8 @@ public class Shell {
             for (int i = smaller; i <= bigger; i++) {
                 chars.removeChar((char) i);
             }
-        } else if (charsToRemove.length() == 1 && Character.isLetter(charsToRemove.charAt(0))) {
+        } else if (charsToRemove.length() == 1 && (charsToRemove.charAt(0) >= MIN_CHAR_VALUE) &&
+                (charsToRemove.charAt(0) <= MAX_CHAR_VALUE)) {
             chars.removeChar(charsToRemove.charAt(0));
         } else {
             throw new InvalidCharToRemoveException("");
