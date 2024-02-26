@@ -81,8 +81,10 @@ public class Shell {
                 } else if (commandWords[COMMAND_WORD_INDEX].equals(CHANGE_OUTPUT_METHOD_COMMAND)) {
                     changeOutputMethod(commandWords[COMMAND_PARAMS_INDEX]);
                 }
-            } catch (InvalidCharToAddException e) {
-                System.out.println("ncjfkd");
+            } catch (InvalidCharToAddException | InvalidCharToRemoveException e) {
+                System.out.println(e.getMessage());
+            } catch (InvalidResolutionException e) {
+                System.out.println("hgrndfk");
             } catch (Exception e) { //TODO: remove
 
             }
@@ -92,8 +94,7 @@ public class Shell {
 
     }
 
-    private void showChars() { //TODO: fix
-        //Collections.sort(chars);
+    private void showChars() {
         for (char character : chars.getSortedCharAlphabeticallyList()) {
             System.out.print("%c ".formatted(character));
         }
@@ -118,7 +119,7 @@ public class Shell {
                 (charsToAdd.charAt(0) <= MAX_CHAR_VALUE)) {
             chars.addChar(charsToAdd.charAt(0));
         } else {
-            throw new InvalidCharToAddException("");
+            throw new InvalidCharToAddException("Did not add due to incorrect format.");
         }
     }
 
@@ -150,7 +151,7 @@ public class Shell {
                 (charsToRemove.charAt(0) <= MAX_CHAR_VALUE)) {
             chars.removeChar(charsToRemove.charAt(0));
         } else {
-            throw new InvalidCharToRemoveException("");
+            throw new InvalidCharToRemoveException("Did not remove due to incorrect format.");
         }
     }
 
@@ -183,12 +184,6 @@ public class Shell {
     }
 
     private void changeOutputMethod(String changeOutputCommand) {
-//        String[] commandWords = changeOutputCommand.split("\\s+");
-//        if (commandWords.length < 2) {
-//            System.out.println("Did not change output method due to incorrect format.");
-//            return;
-//        }
-
         AsciiOutputFactory asciiOutputFactory = new AsciiOutputFactory();
         asciiOutput = asciiOutputFactory.createAsciiOutput(changeOutputCommand, new String[]{
                 "out.html", "Courier New"});
