@@ -47,7 +47,7 @@ public class Shell {
 
     public Shell() throws IOException {
         chars = new SubImgCharMatcher(DEFAULT_CHAR_SET);
-        image = new Image("src/cat.jpeg");//DEFAULT_IMAGE);
+        image = new Image(DEFAULT_IMAGE);
         asciiOutput = DEFAULT_ASCII_OUTPUT;
         imageResolution = DEFAULT_IMAGE_RESOLUTION;
     }
@@ -92,8 +92,7 @@ public class Shell {
 
     }
 
-    private void showChars() { //TODO: fix
-        //Collections.sort(chars);
+    private void showChars() {
         for (char character : chars.getSortedCharAlphabeticallyList()) {
             System.out.print("%c ".formatted(character));
         }
@@ -170,25 +169,18 @@ public class Shell {
             }
             imageResolution /= CHANGE_RESOLUTION_FACTOR;
         }
-        System.out.println("Resolution set to %d".formatted(imageResolution));
+        System.out.println("Resolution set to" + Integer.toString(imageResolution));
     }
 
     private void changeImg(String changeImgCommand) {
-        String[] commandWords = changeImgCommand.split("\\s+");
         try {
-            image = new Image(commandWords[1]);
+            image = new Image(changeImgCommand);
         } catch (IOException e) {
             System.out.println("Did not execute due to problem with image file.");
         }
     }
 
     private void changeOutputMethod(String changeOutputCommand) {
-//        String[] commandWords = changeOutputCommand.split("\\s+");
-//        if (commandWords.length < 2) {
-//            System.out.println("Did not change output method due to incorrect format.");
-//            return;
-//        }
-
         AsciiOutputFactory asciiOutputFactory = new AsciiOutputFactory();
         asciiOutput = asciiOutputFactory.createAsciiOutput(changeOutputCommand, new String[]{
                 "out.html", "Courier New"});
