@@ -47,7 +47,7 @@ public class Shell {
 
     public Shell() throws IOException {
         chars = new SubImgCharMatcher(DEFAULT_CHAR_SET);
-        image = new Image(DEFAULT_IMAGE);
+        image = new Image("src/cat.jpeg");//DEFAULT_IMAGE);
         asciiOutput = DEFAULT_ASCII_OUTPUT;
         imageResolution = DEFAULT_IMAGE_RESOLUTION;
     }
