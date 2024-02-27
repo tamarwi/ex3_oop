@@ -60,6 +60,10 @@ public class Shell {
         }
     }
 
+    /**
+     *
+     * @param userInput
+     */
     private void commandHandler(String userInput) {
         String[] commandWords = userInput.split("\\s+");
         boolean executed = false;
