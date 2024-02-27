@@ -30,7 +30,7 @@ public class Shell {
     private static final int CHANGE_RESOLUTION_FACTOR = 2;
     private static final int MIN_CHAR_VALUE = 32;
     private static final int MAX_CHAR_VALUE = 126;
-    private static final String COMMAND_PROMPT_STRING = "<<<";
+    private static final String COMMAND_PROMPT_STRING = "<<< ";
     private static final int FIRST_CHAR_RANGE_INDEX = 0;
     private static final int SECOND_CHAR_RANGE_INDEX = 2;
     private static final int CHAR_RANGE_PARAM_LENGTH = 3;
@@ -66,14 +66,19 @@ public class Shell {
      */
     private void commandHandler(String userInput) {
         String[] commandWords = userInput.split("\\s+");
-        boolean executed = false;
-        executed = noParamCommandHandler(commandWords);
-        if (!executed) {
+
+        if(commandWords.length == 1){
+            noParamCommandHandler(commandWords);
+        }
+        if (commandWords.length == 2) {
             try {
                 paramCommandHandler(commandWords);
             } catch (InvalidParamsException e) {
                 System.out.println(e.getMessage());
             }
+        }
+        else{
+            System.out.println("");
         }
     }
 
@@ -82,25 +87,20 @@ public class Shell {
      * @param commandWords
      * @return
      */
-    private boolean noParamCommandHandler(String[] commandWords) {
-        boolean correctNumberOfParams = commandWords.length == 1;
-        boolean executed = false;
+    private void noParamCommandHandler(String[] commandWords) {
 
         if (commandWords[COMMAND_WORD_INDEX].equals(SHOW_CHARS_COMMAND)) {
             showChars();
-            executed = true;
         } else if (commandWords[COMMAND_WORD_INDEX].equals(RUN_ALGORITHM_COMMAND)) {
             runAsciiArtAlgorithm();
-            executed = true;
-        } else if (correctNumberOfParams && !executed) {
+        } else{
             System.out.println("Did not execute due to incorrect command.");
         }
-        return executed;
     }
 
     private void paramCommandHandler(String[] commandWords) throws InvalidParamsException {
         switch (commandWords[COMMAND_WORD_INDEX]) {
-            case ADD_CHAR_COMMAND -> addChar(commandWords);
+            case ADD_CHAR_COMMAND -> addChar(commandWords[COMMAND_PARAMS_INDEX]);
             case REMOVE_CHAR_COMMAND -> removeChar(commandWords[COMMAND_PARAMS_INDEX]);
             case CHANGE_IMG_RESOLUTION_COMMAND -> changeImgResolution(commandWords[COMMAND_PARAMS_INDEX]);
             case CHANGE_IMG_COMMAND -> changeImg(commandWords[COMMAND_PARAMS_INDEX]);
@@ -116,11 +116,7 @@ public class Shell {
         System.out.println();
     }
 
-    private void addChar(String[] commandParams) throws InvalidParamsException {
-        if (commandParams.length != 2) {
-            throw new InvalidParamsException("Did not add due to incorrect format.");
-        }
-        String charsToAdd = commandParams[COMMAND_PARAMS_INDEX];
+    private void addChar(String charsToAdd) throws InvalidParamsException {
         if (charsToAdd.equals("all")) {
             for (int i = MIN_CHAR_VALUE; i <= MAX_CHAR_VALUE; i++) {
                 chars.addChar((char) i);
