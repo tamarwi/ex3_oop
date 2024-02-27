@@ -73,6 +73,11 @@ public class Shell {
         }
     }
 
+    /**
+     *
+     * @param commandWords
+     * @return
+     */
     private boolean noParamCommandHandler(String[] commandWords) {
         boolean correctNumberOfParams = commandWords.length == 1;
         boolean executed = false;
