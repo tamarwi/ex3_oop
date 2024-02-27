@@ -3,14 +3,9 @@ package ascii_art;
 import ascii_output.AsciiOutput;
 import ascii_output.ConsoleAsciiOutput;
 import image.Image;
-import image_char_matching.CharConverter;
 import image_char_matching.SubImgCharMatcher;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
 
 public class Shell {
     /*********** COMMAND CONSTANTS ********************/
@@ -36,6 +31,9 @@ public class Shell {
     private static final int MIN_CHAR_VALUE = 32;
     private static final int MAX_CHAR_VALUE = 126;
     private static final String COMMAND_PROMPT_STRING = "<<<";
+    private static final int FIRST_CHAR_RANGE_INDEX = 0;
+    private static final int SECOND_CHAR_RANGE_INDEX = 2;
+    private static final int CHAR_RANGE_PARAM_LENGTH = 3;
 
     /*********** CLASS FIELDS *******************/
     private final SubImgCharMatcher chars;
@@ -54,44 +52,52 @@ public class Shell {
 
     public void run() {
         String input = "";
-        do {
-            System.out.println(COMMAND_PROMPT_STRING);
+        System.out.print(COMMAND_PROMPT_STRING);
+        commandHandler((input = KeyboardInput.readLine()));
+        while (!input.equals(EXIT_COMMAND)) {
+            System.out.print(COMMAND_PROMPT_STRING);
             commandHandler((input = KeyboardInput.readLine()));
-        } while (!input.equals(EXIT_COMMAND));
+        }
     }
 
     private void commandHandler(String userInput) {
         String[] commandWords = userInput.split("\\s+");
-        if (commandWords.length == 1) {
-            if (commandWords[COMMAND_WORD_INDEX].equals(SHOW_CHARS_COMMAND)) {
-                showChars();
-            } else if (commandWords[COMMAND_WORD_INDEX].equals(RUN_ALGORITHM_COMMAND)) {
-                runAsciiArtAlgorithm();
-            }
-        } else if (commandWords.length == 2) {
+        boolean executed = false;
+        executed = noParamCommandHandler(commandWords);
+        if (!executed) {
             try {
-                if (commandWords[COMMAND_WORD_INDEX].equals(ADD_CHAR_COMMAND)) {
-                    addChar(commandWords[COMMAND_PARAMS_INDEX]);
-                } else if (commandWords[COMMAND_WORD_INDEX].equals(REMOVE_CHAR_COMMAND)) {
-                    removeChar(commandWords[COMMAND_PARAMS_INDEX]);
-                } else if (commandWords[COMMAND_WORD_INDEX].equals(CHANGE_IMG_RESOLUTION_COMMAND)) {
-                    changeImgResolution(commandWords[COMMAND_PARAMS_INDEX]);
-                } else if (commandWords[COMMAND_WORD_INDEX].equals(CHANGE_IMG_COMMAND)) {
-                    changeImg(commandWords[COMMAND_PARAMS_INDEX]);
-                } else if (commandWords[COMMAND_WORD_INDEX].equals(CHANGE_OUTPUT_METHOD_COMMAND)) {
-                    changeOutputMethod(commandWords[COMMAND_PARAMS_INDEX]);
-                }
-            } catch (InvalidCharToAddException | InvalidCharToRemoveException e) {
+                paramCommandHandler(commandWords);
+            } catch (InvalidParamsException e) {
                 System.out.println(e.getMessage());
-            } catch (InvalidResolutionException e) {
-                System.out.println("hgrndfk");
-            } catch (Exception e) { //TODO: remove
-
             }
-        } else {
+        }
+    }
+
+    private boolean noParamCommandHandler(String[] commandWords) {
+        boolean correctNumberOfParams = commandWords.length == 1;
+        boolean executed = false;
+
+        if (commandWords[COMMAND_WORD_INDEX].equals(SHOW_CHARS_COMMAND)) {
+            showChars();
+            executed = true;
+        } else if (commandWords[COMMAND_WORD_INDEX].equals(RUN_ALGORITHM_COMMAND)) {
+            runAsciiArtAlgorithm();
+            executed = true;
+        } else if (correctNumberOfParams && !executed) {
             System.out.println("Did not execute due to incorrect command.");
         }
+        return executed;
+    }
 
+    private void paramCommandHandler(String[] commandWords) throws InvalidParamsException {
+        switch (commandWords[COMMAND_WORD_INDEX]) {
+            case ADD_CHAR_COMMAND -> addChar(commandWords);
+            case REMOVE_CHAR_COMMAND -> removeChar(commandWords[COMMAND_PARAMS_INDEX]);
+            case CHANGE_IMG_RESOLUTION_COMMAND -> changeImgResolution(commandWords[COMMAND_PARAMS_INDEX]);
+            case CHANGE_IMG_COMMAND -> changeImg(commandWords[COMMAND_PARAMS_INDEX]);
+            case CHANGE_OUTPUT_METHOD_COMMAND -> changeOutputMethod(commandWords[COMMAND_PARAMS_INDEX]);
+            default -> System.out.println("Did not execute due to incorrect command.");
+        }
     }
 
     private void showChars() {
@@ -101,7 +107,11 @@ public class Shell {
         System.out.println();
     }
 
-    private void addChar(String charsToAdd) throws InvalidCharToAddException {
+    private void addChar(String[] commandParams) throws InvalidParamsException {
+        if (commandParams.length != 2) {
+            throw new InvalidParamsException("Did not add due to incorrect format.");
+        }
+        String charsToAdd = commandParams[COMMAND_PARAMS_INDEX];
         if (charsToAdd.equals("all")) {
             for (int i = MIN_CHAR_VALUE; i <= MAX_CHAR_VALUE; i++) {
                 chars.addChar((char) i);
@@ -109,29 +119,46 @@ public class Shell {
         } else if (charsToAdd.equals("space")) {
             chars.addChar(' ');
         } else if (isCharRange(charsToAdd)) {
-            char smaller = charsToAdd.charAt(0) < charsToAdd.charAt(2) ? charsToAdd.charAt(0) : charsToAdd.charAt(2);
-            char bigger = charsToAdd.charAt(0) < charsToAdd.charAt(2) ? charsToAdd.charAt(2) : charsToAdd.charAt(0);
-
-            for (int i = smaller; i <= bigger; i++) {
-                chars.addChar((char) i);
-            }
+            addRemoveCharRange(charsToAdd, true);
         } else if (charsToAdd.length() == 1 && (charsToAdd.charAt(0) >= MIN_CHAR_VALUE) &&
                 (charsToAdd.charAt(0) <= MAX_CHAR_VALUE)) {
             chars.addChar(charsToAdd.charAt(0));
         } else {
-            throw new InvalidCharToAddException("Did not add due to incorrect format.");
+            throw new InvalidParamsException("Did not add due to incorrect format.");
         }
     }
 
     private boolean isCharRange(String string) {
-        if (string.length() != 3) {
+        if (string.length() != CHAR_RANGE_PARAM_LENGTH) {
             return false;
         }
-        return Character.isLetter(string.charAt(0)) && Character.isLetter(string.charAt(2)) &&
+        return isInCharRange(string.charAt(FIRST_CHAR_RANGE_INDEX)) &&
+                isInCharRange(string.charAt(SECOND_CHAR_RANGE_INDEX)) &&
                 string.charAt(1) == '-';
     }
 
-    private void removeChar(String charsToRemove) throws InvalidCharToRemoveException {
+    private boolean isInCharRange(char c) {
+        return (c <= MAX_CHAR_VALUE) && (c >= MIN_CHAR_VALUE);
+    }
+
+    private void addRemoveCharRange(String charsToAdd, boolean isAddition) {
+        char smaller = charsToAdd.charAt(FIRST_CHAR_RANGE_INDEX) <
+                charsToAdd.charAt(SECOND_CHAR_RANGE_INDEX) ? charsToAdd.charAt(FIRST_CHAR_RANGE_INDEX) :
+                charsToAdd.charAt(SECOND_CHAR_RANGE_INDEX);
+        char bigger = charsToAdd.charAt(FIRST_CHAR_RANGE_INDEX) <
+                charsToAdd.charAt(SECOND_CHAR_RANGE_INDEX) ? charsToAdd.charAt(SECOND_CHAR_RANGE_INDEX) :
+                charsToAdd.charAt(FIRST_CHAR_RANGE_INDEX);
+
+        for (int i = smaller; i <= bigger; i++) {
+            if (isAddition) {
+                chars.addChar((char) i);
+            } else {
+                chars.removeChar((char) i);
+            }
+        }
+    }
+
+    private void removeChar(String charsToRemove) throws InvalidParamsException {
         if (charsToRemove.equals("all")) {
             for (int i = MIN_CHAR_VALUE; i < MAX_CHAR_VALUE; i++) {
                 chars.removeChar((char) i);
@@ -139,39 +166,32 @@ public class Shell {
         } else if (charsToRemove.equals("space")) {
             chars.removeChar(' ');
         } else if (isCharRange(charsToRemove)) {
-            char smaller = charsToRemove.charAt(0) < charsToRemove.charAt(2) ?
-                    charsToRemove.charAt(0) : charsToRemove.charAt(2);
-            char bigger = charsToRemove.charAt(0) < charsToRemove.charAt(2) ?
-                    charsToRemove.charAt(2) : charsToRemove.charAt(0);
-
-            for (int i = smaller; i <= bigger; i++) {
-                chars.removeChar((char) i);
-            }
-        } else if (charsToRemove.length() == 1 && (charsToRemove.charAt(0) >= MIN_CHAR_VALUE) &&
-                (charsToRemove.charAt(0) <= MAX_CHAR_VALUE)) {
+            addRemoveCharRange(charsToRemove, false);
+        } else if (charsToRemove.length() == 1 && (isInCharRange(charsToRemove.charAt(0)))) {
             chars.removeChar(charsToRemove.charAt(0));
         } else {
-            throw new InvalidCharToRemoveException("Did not remove due to incorrect format.");
+            throw new InvalidParamsException("Did not remove due to incorrect format.");
         }
     }
 
-    private void changeImgResolution(String changeResolutionCommand) throws InvalidResolutionException {
+    private void changeImgResolution(String changeResolutionCommand) throws InvalidParamsException {
         int minCharsInRow = Math.max(1, image.getWidth() / image.getHeight());
         if (changeResolutionCommand.equals("up")) {
             if ((imageResolution * CHANGE_RESOLUTION_FACTOR > image.getWidth()) ||
                     (imageResolution * CHANGE_RESOLUTION_FACTOR < minCharsInRow)) {
-                throw new InvalidResolutionException("");
+                throw new InvalidParamsException("Did not change resolution due to exceeding boundaries.");
             }
             imageResolution *= CHANGE_RESOLUTION_FACTOR;
-        }
-        if (changeResolutionCommand.equals("down")) {
+        } else if (changeResolutionCommand.equals("down")) {
             if ((imageResolution / CHANGE_RESOLUTION_FACTOR > image.getWidth()) ||
                     (imageResolution / CHANGE_RESOLUTION_FACTOR < minCharsInRow)) {
-                throw new InvalidResolutionException("");
+                throw new InvalidParamsException("Did not change resolution due to exceeding boundaries.");
             }
             imageResolution /= CHANGE_RESOLUTION_FACTOR;
+        } else {
+            throw new InvalidParamsException("Did not change resolution due to incorrect format.");
         }
-        System.out.println("Resolution set to" + Integer.toString(imageResolution));
+        System.out.println("Resolution set to " + Integer.toString(imageResolution));
     }
 
     private void changeImg(String changeImgCommand) {

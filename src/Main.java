@@ -8,7 +8,7 @@ public class Main {
             Shell s = new Shell();
             s.run();
         } catch(IOException e) {
-            System.out.println("Failed");
+            System.out.println("Failed"+ e.getMessage());
         }
     }
 }
