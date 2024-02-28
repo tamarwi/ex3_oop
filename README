@@ -1,0 +1,14 @@
+tamarwi,Roei.nathanzon
+324893825,213630361
+
+Answers:
+1.
+2.
+3. In order to take care of the exceptions that occur because of incorrect user input, we chose
+to create a new exception class, InvalidParamsException, that extends the default exception Java class implementation,
+which receives an error string message. The message given to the exception is determined according to the
+exercises instructions. We catch the exception in the run function of the Shell class and in
+the catch block we print out (Exception e) e.getMessage().
+4.
+5.
+
