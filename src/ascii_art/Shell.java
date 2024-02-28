@@ -224,7 +224,8 @@ public class Shell {
             showChars();
         } else if (commandWords[COMMAND_WORD_INDEX].equals(RUN_ALGORITHM_COMMAND)) {
             runAsciiArtAlgorithm();
-        } else {
+        }
+        else if(!commandWords[COMMAND_WORD_INDEX].equals(EXIT_COMMAND)){
             System.out.println(INCORRECT_COMMAND_ERROR_MSG);
         }
     }
