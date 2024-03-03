@@ -294,7 +294,7 @@ public class Shell {
      */
     private void showChars() {
         for (char character : chars.getSortedCharAlphabeticallyList()) {
-            System.out.print(character);
+            System.out.print(character+ " ");
         }
         System.out.println();
     }
@@ -378,7 +378,7 @@ public class Shell {
      */
     private void removeChar(String charsToRemove) throws InvalidParamsException {
         if (charsToRemove.equals(ADD_ALL_PARAM)) {
-            for (int i = MIN_CHAR_VALUE; i < MAX_CHAR_VALUE; i++) {
+            for (int i = MIN_CHAR_VALUE; i <= MAX_CHAR_VALUE; i++) {
                 chars.removeChar((char) i);
             }
         } else if (charsToRemove.equals(ADD_SPACE_PARAM)) {
