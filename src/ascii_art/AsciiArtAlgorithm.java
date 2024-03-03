@@ -4,20 +4,30 @@ import image.Image;
 import image.ImageProcessing;
 import image_char_matching.SubImgCharMatcher;
 
-// Class representing an algorithm for generating ASCII art from an image.
+/**
+ * Class representing an algorithm for generating ASCII art from an image.
+ */
 public class AsciiArtAlgorithm {
     private final Image image;              // The input image
     private final int numCharsInRow;        // Number of characters in each row of the output ASCII art
     private final SubImgCharMatcher matcher; // Character matcher for mapping brightness to characters
 
-    // Constructor to initialize the algorithm with the input image, number of characters in a row, and character matcher.
+    /**
+     * Constructor to initialize the algorithm with the input image, number of characters in a row, and character matcher.
+     * @param image The input image to generate ASCII art from.
+     * @param numCharsInRow Number of characters in each row of the output ASCII art.
+     * @param matcher Character matcher for mapping brightness to characters.
+     */
     public AsciiArtAlgorithm(Image image, int numCharsInRow, SubImgCharMatcher matcher) {
         this.image = image;
         this.numCharsInRow = numCharsInRow;
         this.matcher = matcher;
     }
 
-    // Method to run the ASCII art generation algorithm.
+    /**
+     * Method to run the ASCII art generation algorithm.
+     * @return A 2D array representing the resulting ASCII art.
+     */
     public char[][] run() {
         // Pad the input image
         Image paddedImage = ImageProcessing.getPaddedImage(this.image);
