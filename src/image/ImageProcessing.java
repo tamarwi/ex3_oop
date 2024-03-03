@@ -2,7 +2,9 @@ package image;
 
 import java.awt.*;
 
-// A class for image processing operations.
+/**
+ * A class for image processing operations.
+ */
 public class ImageProcessing {
     private final static int MAX_RGB = 255;
 
