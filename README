@@ -2,7 +2,31 @@ tamarwi,Roei.nathanzon
 324893825,213630361
 
 Answers:
-1. TODO: roei and tamar
+1. Classes:
+Image-
+ImageProcessing-
+ConsoleAsciiOutput -
+HtmlAsciiOutput-
+CharBrightness-
+CharConverter-
+SubImgMatcher-
+AsciiOutputFactory-
+AsciiArtAlgorithm-
+InvalidParamsException-
+KeyBoardInput-
+Shell- Represents a shell for interacting with ASCII art generation and manipulation. Users can input
+commands to perform various operations such as adding or removing characters, changing image resolution,
+selecting output methods, and running the ASCII art algorithm.
+
+Connections between classes:
+- Both ConsoleAsciiOutput and HtmlAsciiOutput both implement the AsciiOutput interface.
+- CharBrightness implements the Comparable interface.
+- SubImgCharMatcher contains an ArrayList of CharBrightness.
+- AsciiArtAlgorithm contains a SubImgCharMatcher field.
+- InvalidParamsException extends the default Exception java class.
+- Shell class contains instances of the following classes as fields: SubImgCharMatcher,
+Image, AsciiOutput.
+
 
 2. Java data structures that we used:
 ArrayList<CharBrightness>: This is a sorted ArrayList used in SubImgCharMatcher, which is used to find a char
