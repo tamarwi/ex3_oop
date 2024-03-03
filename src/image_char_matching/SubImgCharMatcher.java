@@ -61,8 +61,11 @@ public class SubImgCharMatcher{
         {
             return;
         }
-        this.sortedCharBrightnessList.add(charBrightness);
-        Collections.sort(this.sortedCharBrightnessList);
+
+        int pos = Collections.binarySearch(this.sortedCharBrightnessList, charBrightness);
+        if (pos < 0) {
+            this.sortedCharBrightnessList.add(-pos-1, charBrightness);
+        }
 
         if(charBrightness.getNonLinearBrightness() > this.maxBrightness ||
                 charBrightness.getNonLinearBrightness() < this.minBrightness){
@@ -74,7 +77,7 @@ public class SubImgCharMatcher{
 
     public void removeChar(char c){
         CharBrightness charBrightness = new CharBrightness(c);
-        this.sortedCharBrightnessList.remove(charBrightness); //TODO: remove assert
+        this.sortedCharBrightnessList.remove(charBrightness);
 
         if(charBrightness.getNonLinearBrightness() == this.maxBrightness ||
                 charBrightness.getNonLinearBrightness() == this.minBrightness){

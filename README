@@ -2,13 +2,40 @@ tamarwi,Roei.nathanzon
 324893825,213630361
 
 Answers:
-1.
-2.
+1. TODO: roei and tamar
+
+2. Java data structures that we used:
+ArrayList<CharBrightness>: This is a sorted ArrayList used in SubImgCharMatcher, which is used to find a char
+closest to a specific brightness value.
+CharBrightness is a data structure created by us to contain char,
+brightness value and linear brightness value, and we overridden compareTo so that it will be sorted
+by the brightness value.
+
+To add char to the options we use binary search by the brightness value of the char and if it doesn't
+exist we add the char to the position where it should be. It takes O(n) because adding a value to the list
+means moving all the values after it.
+
+To remove char we use ArrayList.remove which takes O(n).
+
+To get character closest to a specific brightness value we use custom binary search, in which if we don't
+find a char with the specific brightness value, we see in what right, left indexes the binary search stopped
+and check the distance between the chars in these indexes and the specified brightness value, then
+we take the character whose distance from the specific brightness value is lower - this takes O(log n) except
+when all the chars have the same brightness value and then it can take O(n) because we want the first char in
+alphabetical order.
+
+We chose this data structure because the most frequently used operation is finding char closes to a
+specific brightness value, and this data structure makes it the most efficient.
+
 3. In order to take care of the exceptions that occur because of incorrect user input, we chose
 to create a new exception class, InvalidParamsException, that extends the default exception Java class implementation,
 which receives an error string message. The message given to the exception is determined according to the
 exercises instructions. We catch the exception in the run function of the Shell class and in
 the catch block we print out (Exception e) e.getMessage().
-4.
-5.
+
+4. We added the method getSortedCharAlphabeticallyList().
+This method is used to get a sorted list of the characters used in SubImgCharMatcher.
+It is used Shell.java to show the used characters in alphabetically order.
+
+5. TODO: check shinuyim
 
