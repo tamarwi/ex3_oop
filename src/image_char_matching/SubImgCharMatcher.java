@@ -26,7 +26,12 @@ public class SubImgCharMatcher {
         }
     }
 
-    // Method to get the character associated with a given image brightness.
+
+    /**
+     * Method to get the character associated with a given image brightness.
+     * @param brightness value to which the char brightness should be closest to
+     * @return the char with the closest brightness value to brightness from the char set
+     */
     public char getCharByImageBrightness(double brightness) {
         int right = this.sortedCharBrightnessList.size();
         int left = 0;
@@ -57,6 +62,7 @@ public class SubImgCharMatcher {
                 this.sortedCharBrightnessList.get(right).getLinearBrightness()) {
             --right;
         }
+
         if (leftDistance < rightDistance) {
             return this.sortedCharBrightnessList.get(left).getCharacter();
         } else if (leftDistance > rightDistance) {
@@ -65,7 +71,12 @@ public class SubImgCharMatcher {
         return this.sortedCharBrightnessList.get(left).getCharacter();
     }
 
-    // Method to add a character to the list of sorted characters.
+
+    /**
+     * Method to add a character to the list of sorted characters.
+     *
+     * @param c character to add to the char set
+     */
     public void addChar(char c) {
         CharBrightness charBrightness = new CharBrightness(c);
         if (this.sortedCharBrightnessList.contains(charBrightness)) {
@@ -86,7 +97,11 @@ public class SubImgCharMatcher {
         }
     }
 
-    // Method to remove a character from the list of sorted characters.
+    /**
+     * Method to remove a character from the list of sorted characters.
+     *
+     * @param c character to remove from char set
+     */
     public void removeChar(char c) {
         CharBrightness charBrightness = new CharBrightness(c);
         this.sortedCharBrightnessList.remove(charBrightness); // Remove character from the list
@@ -98,7 +113,9 @@ public class SubImgCharMatcher {
         }
     }
 
-    // Method to linearize the brightness list.
+    /**
+     * Method to linearize the brightness list.
+     */
     private void linearizeBrightnessList() {
         // Update min and max brightness
         this.minBrightness = this.sortedCharBrightnessList.getFirst().getNonLinearBrightness();
@@ -109,7 +126,11 @@ public class SubImgCharMatcher {
         }
     }
 
-    // Method to get a sorted list of characters alphabetically.
+    /**
+     * Method to get a sorted list of characters alphabetically.
+     *
+     * @return ArrayList of the characters from the char set in alphabetically order
+     */
     public ArrayList<Character> getSortedCharAlphabeticallyList() {
         ArrayList<Character> copyCharList = new ArrayList<Character>();
         // Copy characters from sorted list to new list
