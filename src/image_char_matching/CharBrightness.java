@@ -16,7 +16,8 @@ public class CharBrightness implements Comparable<CharBrightness> {
      */
     public CharBrightness(char character) {
         this.character = character;
-        this.nonLinearBrightness = calculateNonLinearBrightness(character);  // Calculate non-linear brightness
+        // Calculate non-linear brightness
+        this.nonLinearBrightness = calculateNonLinearBrightness(character);
         this.linearBrightness = -1;    // Default value until updated
     }
 
@@ -49,7 +50,8 @@ public class CharBrightness implements Comparable<CharBrightness> {
             }
         }
         // Calculate brightness as the ratio of bright pixels to total pixels
-        return (double) (numTrue) / (CharConverter.DEFAULT_PIXEL_RESOLUTION * CharConverter.DEFAULT_PIXEL_RESOLUTION);
+        return (double) (numTrue) / (CharConverter.DEFAULT_PIXEL_RESOLUTION *
+                CharConverter.DEFAULT_PIXEL_RESOLUTION);
     }
 
     /**

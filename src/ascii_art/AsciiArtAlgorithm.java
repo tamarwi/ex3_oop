@@ -13,7 +13,8 @@ public class AsciiArtAlgorithm {
     private final SubImgCharMatcher matcher; // Character matcher for mapping brightness to characters
 
     /**
-     * Constructor to initialize the algorithm with the input image, number of characters in a row, and character matcher.
+     * Constructor to initialize the algorithm with the input image, number of characters in a row, and
+     * character matcher.
      * @param image The input image to generate ASCII art from.
      * @param numCharsInRow Number of characters in each row of the output ASCII art.
      * @param matcher Character matcher for mapping brightness to characters.
