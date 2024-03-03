@@ -16,17 +16,17 @@ public class AsciiOutputFactory {
      * @return An instance of AsciiOutput corresponding to the specified output type and parameters.
      */
     public AsciiOutput createAsciiOutput(String outputType, String[] params) {
-        AsciiOutput asciiOutput = null;  // Initialize output variable
+        AsciiOutput asciiOutput = null;  // Initialize output variable.
         switch(outputType) {
-            // If the output type is "console", create a ConsoleAsciiOutput instance
+            // If the output type is "console", create a ConsoleAsciiOutput instance.
             case "console":
                 asciiOutput = new ConsoleAsciiOutput();
                 break;
-            // If the output type is "html", create an HtmlAsciiOutput instance with provided parameters
+            // If the output type is "html", create an HtmlAsciiOutput instance with provided parameters.
             case "html":
                 asciiOutput = new HtmlAsciiOutput(params[0], params[1]);
                 break;
         }
-        return asciiOutput;  // Return the created AsciiOutput instance
+        return asciiOutput;  // Return the created AsciiOutput instance.
     }
 }

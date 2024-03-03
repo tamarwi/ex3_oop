@@ -9,20 +9,20 @@ import java.io.IOException;
 /**
  * A package-private class of the package image that represents an image as a 2D Color array.
  *
- * @see Color
- * @author Dan Nirel
+ * @see Color.
+ * @author Dan Nirel.
  */
 public class Image {
-    // Array to hold pixel colors
+    // Array to hold pixel colors.
     private final Color[][] pixelArray;
-    // Dimensions of the image
+    // Dimensions of the image.
     private final int width;
     private final int height;
 
     /**
-     * Constructor to create an Image object from a file
+     * Constructor to create an Image object from a file.
      *
-     * @param filename
+     * @param filename of the image to load.
      * @throws IOException
      */
     public Image(String filename) throws IOException {
@@ -30,7 +30,7 @@ public class Image {
         width = im.getWidth();
         height = im.getHeight();
 
-        // Populate the pixelArray with colors from the BufferedImage
+        // Populate the pixelArray with colors from the BufferedImage.
         pixelArray = new Color[height][width];
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
@@ -40,11 +40,11 @@ public class Image {
     }
 
     /**
-     * Constructor to create an Image object from a pixel array
+     * Constructor to create an Image object from a pixel array.
      *
-     * @param pixelArray
-     * @param width
-     * @param height
+     * @param pixelArray that describes the image.
+     * @param width of the image.
+     * @param height of the image.
      */
     public Image(Color[][] pixelArray, int width, int height) {
         this.pixelArray = pixelArray;
@@ -53,38 +53,38 @@ public class Image {
     }
 
     /**
-     * Getter method to get the width of the image
+     * Getter method to get the width of the image.
      *
-     * @return width of the image
+     * @return width of the image.
      */
     public int getWidth() {
         return width;
     }
 
     /**
-     * Getter method to get the height of the image
+     * Getter method to get the height of the image.
      *
-     * @return height
+     * @return height.
      */
     public int getHeight() {
         return height;
     }
 
     /**
-     * Method to get the color of a pixel at a given position
+     * Method to get the color of a pixel at a given position.
      *
-     * @param x row of pixel
-     * @param y column of pixel
-     * @return color of the pixel
+     * @param x row of pixel.
+     * @param y column of pixel.
+     * @return color of the pixel.
      */
     public Color getPixel(int x, int y) {
         return pixelArray[x][y];
     }
 
     /**
-     * Method to save the image to a file
+     * Method to save the image to a file.
      *
-     * @param fileName name of file to save
+     * @param fileName name of file to save.
      */
     public void saveImage(String fileName) {
         // Initialize BufferedImage, assuming Color[][] is already properly populated.
@@ -96,7 +96,7 @@ public class Image {
                 bufferedImage.setRGB(y, x, pixelArray[x][y].getRGB());
             }
         }
-        // Save the BufferedImage to a file
+        // Save the BufferedImage to a file.
         File outputfile = new File(fileName + ".jpeg");
         try {
             ImageIO.write(bufferedImage, "jpeg", outputfile);

@@ -27,7 +27,7 @@ public class CharConverter {
         boolean[][] matrix = new boolean[DEFAULT_PIXEL_RESOLUTION][DEFAULT_PIXEL_RESOLUTION];
         for(int y = 0 ; y < DEFAULT_PIXEL_RESOLUTION ; y++) {
             for(int x = 0 ; x < DEFAULT_PIXEL_RESOLUTION ; x++) {
-                matrix[y][x] = img.getRGB(x, y) == 0; //is the color black
+                matrix[y][x] = img.getRGB(x, y) == 0; //is the color black.
             }
         }
         return matrix;

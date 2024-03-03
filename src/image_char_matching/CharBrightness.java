@@ -5,9 +5,9 @@ package image_char_matching;
  * and update linear brightness based on a given range.
  */
 public class CharBrightness implements Comparable<CharBrightness> {
-    private char character;                 // The character associated with this brightness
-    private double nonLinearBrightness;     // Non-linear brightness of the character
-    private double linearBrightness;        // Linear brightness of the character
+    private char character;                 // The character associated with this brightness.
+    private double nonLinearBrightness;     // Non-linear brightness of the character.
+    private double linearBrightness;        // Linear brightness of the character.
 
     /**
      * Constructor to initialize CharBrightness object with a character.
@@ -16,9 +16,9 @@ public class CharBrightness implements Comparable<CharBrightness> {
      */
     public CharBrightness(char character) {
         this.character = character;
-        // Calculate non-linear brightness
+        // Calculate non-linear brightness.
         this.nonLinearBrightness = calculateNonLinearBrightness(character);
-        this.linearBrightness = -1;    // Default value until updated
+        this.linearBrightness = -1;    // Default value until updated.
     }
 
 
@@ -41,7 +41,7 @@ public class CharBrightness implements Comparable<CharBrightness> {
     private double calculateNonLinearBrightness(char c) {
         boolean[][] arr = CharConverter.convertToBoolArray(c);
         int numTrue = 0;
-        // Count the number of true values (bright pixels) in the character matrix
+        // Count the number of true values (bright pixels) in the character matrix.
         for (int i = 0; i < CharConverter.DEFAULT_PIXEL_RESOLUTION; ++i) {
             for (int j = 0; j < CharConverter.DEFAULT_PIXEL_RESOLUTION; ++j) {
                 if (arr[i][j]) {
@@ -49,7 +49,7 @@ public class CharBrightness implements Comparable<CharBrightness> {
                 }
             }
         }
-        // Calculate brightness as the ratio of bright pixels to total pixels
+        // Calculate brightness as the ratio of bright pixels to total pixels.
         return (double) (numTrue) / (CharConverter.DEFAULT_PIXEL_RESOLUTION *
                 CharConverter.DEFAULT_PIXEL_RESOLUTION);
     }
@@ -90,7 +90,7 @@ public class CharBrightness implements Comparable<CharBrightness> {
     @Override
     public int compareTo(CharBrightness other) {
         double subtraction = (this.nonLinearBrightness - other.nonLinearBrightness);
-        // If brightness is equal, compare characters
+        // If brightness is equal, compare characters.
         if (subtraction == 0) {
             if (this.character < other.character) {
                 return -1;
@@ -99,7 +99,7 @@ public class CharBrightness implements Comparable<CharBrightness> {
             }
             return 0;
         }
-        // Otherwise, return comparison based on brightness difference
+        // Otherwise, return comparison based on brightness difference.
         else if (subtraction < 0) {
             return -1;
         }

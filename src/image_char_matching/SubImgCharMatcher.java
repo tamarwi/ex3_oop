@@ -7,10 +7,10 @@ import java.util.Collections;
  * A class for matching characters to image brightness.
  */
 public class SubImgCharMatcher {
-    // List of characters sorted by brightness
+    // List of characters sorted by brightness.
     private final ArrayList<CharBrightness> sortedCharBrightnessList;
-    private double minBrightness;   // Minimum brightness among characters
-    private double maxBrightness;   // Maximum brightness among characters
+    private double minBrightness;   // Minimum brightness among characters.
+    private double maxBrightness;   // Maximum brightness among characters.
 
     /**
      * Constructor to initialize the SubImgCharMatcher with a given character set.
@@ -19,10 +19,10 @@ public class SubImgCharMatcher {
     public SubImgCharMatcher(char[] charset) {
         // Initialize character brightness list
         this.sortedCharBrightnessList = new ArrayList<CharBrightness>();
-        this.minBrightness = 1;   // Initialize minimum brightness to highest possible value
-        this.maxBrightness = -1;  // Initialize maximum brightness to lowest possible value
+        this.minBrightness = 1;   // Initialize minimum brightness to highest possible value.
+        this.maxBrightness = -1;  // Initialize maximum brightness to lowest possible value.
         for (char c : charset) {
-            addChar(c);  // Add each character to the list
+            addChar(c);  // Add each character to the list.
         }
     }
 
@@ -38,14 +38,15 @@ public class SubImgCharMatcher {
         }
         int right = this.sortedCharBrightnessList.size();
         int left = 0;
-        // Binary search to find the character with brightness closest to the given brightness
+        // Binary search to find the character with brightness closest to the given brightness.
         while (left <= right) {
             int mid = left + (right - left) / 2;
             double midBrightness = this.sortedCharBrightnessList.get(mid).getLinearBrightness();
 
-            // Check if brightness is present at mid
+            // Check if brightness is present at mid.
             if (midBrightness == brightness) {
-                // This loop ensures that the lower character is chosen if there are characters with equal brightness
+                // This loop ensures that the lower character is chosen if there are characters with
+                // equal brightness.
                 while (mid > 0 && this.sortedCharBrightnessList.get(mid - 1).getLinearBrightness() ==
                         this.sortedCharBrightnessList.get(mid).getLinearBrightness()) {
                     --mid;
@@ -53,11 +54,11 @@ public class SubImgCharMatcher {
                 return this.sortedCharBrightnessList.get(mid).getCharacter();
             }
 
-            // If brightness greater, ignore left half
+            // If brightness greater, ignore left half.
             if (midBrightness < brightness) {
                 left = mid + 1;
             }
-                // If brightness is smaller, ignore right half
+                // If brightness is smaller, ignore right half.
             else {
                 right = mid - 1;
             }
@@ -67,7 +68,7 @@ public class SubImgCharMatcher {
         double leftDistance = Math.abs(brightness - leftBrightness);
         double rightDistance = Math.abs(brightness - rightBrightness);
 
-        // This loop ensures that the lower character is chosen if there are characters with equal brightness
+        // This loop ensures that the lower character is chosen if there are characters with equal brightness.
         while (right > 0 && this.sortedCharBrightnessList.get(right - 1).getLinearBrightness() ==
                 this.sortedCharBrightnessList.get(right).getLinearBrightness()) {
             --right;
@@ -90,15 +91,16 @@ public class SubImgCharMatcher {
     public void addChar(char c) {
         CharBrightness charBrightness = new CharBrightness(c);
         if (this.sortedCharBrightnessList.contains(charBrightness)) {
-            return; // If character already exists, return
+            return; // If character already exists, return.
         }
 
         int pos = Collections.binarySearch(this.sortedCharBrightnessList, charBrightness);
         if (pos < 0) {
-            this.sortedCharBrightnessList.add(-pos - 1, charBrightness); // Add character in sorted order
+            // Add character in sorted order.
+            this.sortedCharBrightnessList.add(-pos - 1, charBrightness);
         }
 
-        // Update min and max brightness, and linearize brightness list if necessary
+        // Update min and max brightness, and linearize brightness list if necessary.
         if (charBrightness.getNonLinearBrightness() > this.maxBrightness ||
                 charBrightness.getNonLinearBrightness() < this.minBrightness) {
             linearizeBrightnessList();
@@ -114,9 +116,9 @@ public class SubImgCharMatcher {
      */
     public void removeChar(char c) {
         CharBrightness charBrightness = new CharBrightness(c);
-        this.sortedCharBrightnessList.remove(charBrightness); // Remove character from the list
+        this.sortedCharBrightnessList.remove(charBrightness); // Remove character from the list.
 
-        // Update min and max brightness, and linearize brightness list if necessary
+        // Update min and max brightness, and linearize brightness list if necessary.
         if (charBrightness.getNonLinearBrightness() == this.maxBrightness ||
                 charBrightness.getNonLinearBrightness() == this.minBrightness) {
             linearizeBrightnessList();
@@ -130,11 +132,11 @@ public class SubImgCharMatcher {
         if(this.sortedCharBrightnessList.isEmpty()){
             return;
         }
-        // Update min and max brightness
+        // Update min and max brightness.
         this.minBrightness = this.sortedCharBrightnessList.get(0).getNonLinearBrightness();
         this.maxBrightness = this.sortedCharBrightnessList.get(
                 this.sortedCharBrightnessList.size()-1).getNonLinearBrightness();
-        // Update linear brightness of all characters
+        // Update linear brightness of all characters.
         for (CharBrightness charBrightness : this.sortedCharBrightnessList) {
             charBrightness.updateLinearBrightness(minBrightness, maxBrightness);
         }
@@ -147,12 +149,12 @@ public class SubImgCharMatcher {
      */
     public ArrayList<Character> getSortedCharAlphabeticallyList() {
         ArrayList<Character> copyCharList = new ArrayList<Character>();
-        // Copy characters from sorted list to new list
+        // Copy characters from sorted list to new list.
         for (CharBrightness charBrightness : sortedCharBrightnessList) {
             copyCharList.add(charBrightness.getCharacter());
         }
 
-        Collections.sort(copyCharList); // Sort the list alphabetically
+        Collections.sort(copyCharList); // Sort the list alphabetically.
         return copyCharList;
     }
 }
