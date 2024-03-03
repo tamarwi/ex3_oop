@@ -45,6 +45,11 @@ public class CharBrightness implements Comparable<CharBrightness>{
     public int compareTo(CharBrightness other){
         double subtraction = (this.nonLinearBrightness - other.nonLinearBrightness);
         if(subtraction == 0){
+            if(this.character < other.character){
+                return -1;
+            }else if(this.character > other.character){
+                return 1;
+            }
             return 0;
         }
         else if(subtraction < 0){

@@ -40,12 +40,19 @@ public class SubImgCharMatcher{
         double rightBrightness = this.sortedCharBrightnessList.get(right).getLinearBrightness();
         double leftDistance = Math.abs(brightness - leftBrightness);
         double rightDistance = Math.abs(brightness - rightBrightness);
+
+        // This makes sure that the lower character is chosen - because there might be some letters with equal
+        while(right > 0 && this.sortedCharBrightnessList.get(right-1).getLinearBrightness() ==
+                this.sortedCharBrightnessList.get(right).getLinearBrightness()){
+            --right;
+        }
         if(leftDistance < rightDistance){
             return this.sortedCharBrightnessList.get(left).getCharacter();
         }
-        else{
+        else if(leftDistance > rightDistance){
             return this.sortedCharBrightnessList.get(right).getCharacter();
         }
+        return this.sortedCharBrightnessList.get(left).getCharacter();
     }
 
     public void addChar(char c){
