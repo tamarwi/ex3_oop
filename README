@@ -4,7 +4,7 @@ tamarwi,Roei.nathanzon
 Answers:
 1. Classes:
 Image-
-ImageProcessing-
+ImageProcessing- A class for image processing operations.
 ConsoleAsciiOutput - Class that is responsible to output a 2D array of chars to the console.
 HtmlAsciiOutput-  Class that is responsible to output a 2D array of chars to an HTML file viewable in a web browser.
 CharBrightness- A class representing the brightness of a character, with methods to calculate brightness
