@@ -1,68 +1,85 @@
 package image_char_matching;
 
-public class CharBrightness implements Comparable<CharBrightness>{
-    private char character;
-    private double nonLinearBrightness;
-    private double linearBrightness;
+// A class representing the brightness of a character, with methods to calculate brightness
+// and update linear brightness based on a given range.
+public class CharBrightness implements Comparable<CharBrightness> {
+    private char character;                 // The character associated with this brightness
+    private double nonLinearBrightness;     // Non-linear brightness of the character
+    private double linearBrightness;        // Linear brightness of the character
 
-    public CharBrightness(char character){
+    /**
+     * Constructor to initialize CharBrightness object with a character.
+     *
+     * @param character The character to associate with this brightness.
+     */
+    public CharBrightness(char character) {
         this.character = character;
-        this.nonLinearBrightness = calculateNonLinearBrightness(character);
-        this.linearBrightness = -1;
+        this.nonLinearBrightness = calculateNonLinearBrightness(character);  // Calculate non-linear brightness
+        this.linearBrightness = -1;    // Default value until updated
     }
 
-    public void updateLinearBrightness(double minBrightness, double maxBrightness){
+    // Method to update linear brightness based on given min and max brightness values.
+    public void updateLinearBrightness(double minBrightness, double maxBrightness) {
         this.linearBrightness = (this.nonLinearBrightness - minBrightness) / (maxBrightness - minBrightness);
     }
 
-    private double calculateNonLinearBrightness(char c){
+    // Method to calculate non-linear brightness of a character.
+    private double calculateNonLinearBrightness(char c) {
         boolean[][] arr = CharConverter.convertToBoolArray(c);
         int numTrue = 0;
-        for(int i=0; i<CharConverter.DEFAULT_PIXEL_RESOLUTION; ++i){
-            for(int j=0; j<CharConverter.DEFAULT_PIXEL_RESOLUTION; ++j){
-                if(arr[i][j]){
+        // Count the number of true values (bright pixels) in the character matrix
+        for (int i = 0; i < CharConverter.DEFAULT_PIXEL_RESOLUTION; ++i) {
+            for (int j = 0; j < CharConverter.DEFAULT_PIXEL_RESOLUTION; ++j) {
+                if (arr[i][j]) {
                     ++numTrue;
                 }
             }
         }
-        return (double) (numTrue) / (CharConverter.DEFAULT_PIXEL_RESOLUTION *
-                CharConverter.DEFAULT_PIXEL_RESOLUTION);
+        // Calculate brightness as the ratio of bright pixels to total pixels
+        return (double) (numTrue) / (CharConverter.DEFAULT_PIXEL_RESOLUTION * CharConverter.DEFAULT_PIXEL_RESOLUTION);
     }
 
+    // Getter method for the character associated with this brightness.
     public char getCharacter() {
         return character;
     }
 
+    // Getter method for the non-linear brightness of the character.
     public double getNonLinearBrightness() {
         return nonLinearBrightness;
     }
 
+    // Getter method for the linear brightness of the character.
     public double getLinearBrightness() {
         return linearBrightness;
     }
 
+    // Comparison method to compare brightness of characters.
     @Override
-    public int compareTo(CharBrightness other){
+    public int compareTo(CharBrightness other) {
         double subtraction = (this.nonLinearBrightness - other.nonLinearBrightness);
-        if(subtraction == 0){
-            if(this.character < other.character){
+        // If brightness is equal, compare characters
+        if (subtraction == 0) {
+            if (this.character < other.character) {
                 return -1;
-            }else if(this.character > other.character){
+            } else if (this.character > other.character) {
                 return 1;
             }
             return 0;
         }
-        else if(subtraction < 0){
+        // Otherwise, return comparison based on brightness difference
+        else if (subtraction < 0) {
             return -1;
         }
         return 1;
     }
 
+    // Method to check equality between CharBrightness objects.
     @Override
-    public boolean equals(Object o){
-        if(!(o instanceof CharBrightness)){
+    public boolean equals(Object o) {
+        if (!(o instanceof CharBrightness)) {
             return false;
         }
-        return ((CharBrightness)o).character == this.character;
+        return ((CharBrightness) o).character == this.character;
     }
 }
