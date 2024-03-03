@@ -44,16 +44,23 @@ public class SubImgCharMatcher {
             double midBrightness = this.sortedCharBrightnessList.get(mid).getLinearBrightness();
 
             // Check if brightness is present at mid
-            if (midBrightness == brightness)
+            if (midBrightness == brightness) {
+                // This loop ensures that the lower character is chosen if there are characters with equal brightness
+                while (mid > 0 && this.sortedCharBrightnessList.get(mid - 1).getLinearBrightness() ==
+                        this.sortedCharBrightnessList.get(mid).getLinearBrightness()) {
+                    --mid;
+                }
                 return this.sortedCharBrightnessList.get(mid).getCharacter();
+            }
 
             // If brightness greater, ignore left half
-            if (midBrightness < brightness)
+            if (midBrightness < brightness) {
                 left = mid + 1;
-
+            }
                 // If brightness is smaller, ignore right half
-            else
+            else {
                 right = mid - 1;
+            }
         }
         double leftBrightness = this.sortedCharBrightnessList.get(left).getLinearBrightness();
         double rightBrightness = this.sortedCharBrightnessList.get(right).getLinearBrightness();
@@ -71,7 +78,7 @@ public class SubImgCharMatcher {
         } else if (leftDistance > rightDistance) {
             return this.sortedCharBrightnessList.get(right).getCharacter();
         }
-        return this.sortedCharBrightnessList.get(left).getCharacter();
+        return this.sortedCharBrightnessList.get(right).getCharacter();
     }
 
 
