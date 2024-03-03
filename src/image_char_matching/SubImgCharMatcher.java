@@ -118,8 +118,9 @@ public class SubImgCharMatcher {
      */
     private void linearizeBrightnessList() {
         // Update min and max brightness
-        this.minBrightness = this.sortedCharBrightnessList.getFirst().getNonLinearBrightness();
-        this.maxBrightness = this.sortedCharBrightnessList.getLast().getNonLinearBrightness();
+        this.minBrightness = this.sortedCharBrightnessList.get(0).getNonLinearBrightness();
+        this.maxBrightness = this.sortedCharBrightnessList.get(
+                this.sortedCharBrightnessList.size()-1).getNonLinearBrightness();
         // Update linear brightness of all characters
         for (CharBrightness charBrightness : this.sortedCharBrightnessList) {
             charBrightness.updateLinearBrightness(minBrightness, maxBrightness);
