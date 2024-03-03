@@ -12,7 +12,7 @@ import java.io.IOException;
  * Users can input commands to perform various operations such as adding or removing characters,
  * changing image resolution, selecting output methods, and running the ASCII art algorithm.
  *
- * @author OOP staff
+ * @author tamarwi, Roei.Nathanzon
  * @see SubImgCharMatcher
  * @see AsciiOutput
  */
