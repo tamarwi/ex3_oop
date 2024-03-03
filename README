@@ -63,5 +63,5 @@ the catch block we print out (Exception e) e.getMessage().
 This method is used to get a sorted list of the characters used in SubImgCharMatcher.
 It is used Shell.java to show the used characters in alphabetically order.
 
-5. TODO: check shinuyim
+5. We didn't change the given API in the supplied code :)
 
