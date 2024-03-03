@@ -1,6 +1,6 @@
 package image_char_matching;
 
-public class CharBrightness implements CompaCrable<CharBrightness>{
+public class CharBrightness implements Comparable<CharBrightness>{
     private char character;
     private double nonLinearBrightness;
     private double linearBrightness;
