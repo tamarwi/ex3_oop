@@ -58,6 +58,23 @@ public class Shell {
      * Command constant for running the ASCII art algorithm.
      */
     private static final String RUN_ALGORITHM_COMMAND = "asciiArt";
+    /**
+     * Param to put after add command to add space char.
+     */
+    private static final String ADD_SPACE_PARAM = "space";
+    /**
+     * Param to put after add command to add all chars.
+     */
+    private static final String ADD_ALL_PARAM = "all";
+
+    /**
+     * String for upping the resolution in the res command.
+     */
+    private static final String UP_PARAM_RES_COMMAND = "up";
+    /**
+     * String for reducing the resolution in the res command.
+     */
+    private static final String DOWN_PARAM_RES_COMMAND = "down";
 
     // DEFAULT VALUES CONSTANTS
 
@@ -132,16 +149,42 @@ public class Shell {
      * Length of a character range parameter.
      */
     private static final int CHAR_RANGE_PARAM_LENGTH = 3;
+    /**
+     * Default name for html output file.
+     */
+    private static final String DEFAULT_HTML_FILENAME = "out.html";
+    /**
+     * Default font for html output file.
+     */
+    private static final String DEFAULT_FONT = "Courier New";
     //ERROR MESSAGES
+    /**
+     * Error string for when an invalid command was entered.
+     */
     private static final String INCORRECT_COMMAND_ERROR_MSG = "Did not execute due to incorrect command.";
+    /**
+     * Error string for add command when entering invalid param.
+     */
     private static final String ADD_COMMAND_INCORRECT_FORMAT_ERROR_MSG =
             "Did not add due to incorrect format.";
+    /**
+     * Error string for remove command when entering invalid param.
+     */
     private static final String REMOVE_COMMAND_INCORRECT_FORMAT_ERROR_MSG =
             "Did not remove due to incorrect format.";
+    /**
+     * Error string when changing image to an invalid path (cannot open the image).
+     */
 
     private static final String IMG_COMMAND_ERROR_MSG = "Did not execute due to problem with image file.";
+    /**
+     * Error string when changing resolution to invalid value.
+     */
     private static final String RES_COMMAND_BOUNDARIES_ERROR_MSG =
             "Did not change resolution due to exceeding boundaries.";
+    /**
+     * Error string for res command when entering invalid params.
+     */
     private static final String RES_COMMAND_INCORRECT_FORMAT_ERROR_MSG =
             "Did not change resolution due to incorrect format.";
 
@@ -224,8 +267,7 @@ public class Shell {
             showChars();
         } else if (commandWords[COMMAND_WORD_INDEX].equals(RUN_ALGORITHM_COMMAND)) {
             runAsciiArtAlgorithm();
-        }
-        else if(!commandWords[COMMAND_WORD_INDEX].equals(EXIT_COMMAND)){
+        } else if (!commandWords[COMMAND_WORD_INDEX].equals(EXIT_COMMAND)) {
             System.out.println(INCORRECT_COMMAND_ERROR_MSG);
         }
     }
@@ -252,7 +294,7 @@ public class Shell {
      */
     private void showChars() {
         for (char character : chars.getSortedCharAlphabeticallyList()) {
-            System.out.print("%c ".formatted(character));
+            System.out.print(character);
         }
         System.out.println();
     }
@@ -264,17 +306,17 @@ public class Shell {
      * @throws InvalidParamsException if the parameters provided are invalid.
      */
     private void addChar(String charsToAdd) throws InvalidParamsException {
-        if (charsToAdd.equals("all")) {
+        if (charsToAdd.equals(ADD_ALL_PARAM)) {
             for (int i = MIN_CHAR_VALUE; i <= MAX_CHAR_VALUE; i++) {
                 chars.addChar((char) i);
             }
-        } else if (charsToAdd.equals("space")) {
+        } else if (charsToAdd.equals(ADD_SPACE_PARAM)) {
             chars.addChar(' ');
         } else if (isCharRange(charsToAdd)) {
             addRemoveCharRange(charsToAdd, true);
-        } else if (charsToAdd.length() == 1 && (charsToAdd.charAt(0) >= MIN_CHAR_VALUE) &&
-                (charsToAdd.charAt(0) <= MAX_CHAR_VALUE)) {
-            chars.addChar(charsToAdd.charAt(0));
+        } else if (charsToAdd.length() == 1 && (charsToAdd.charAt(FIRST_CHAR_RANGE_INDEX) >= MIN_CHAR_VALUE)
+                && (charsToAdd.charAt(FIRST_CHAR_RANGE_INDEX) <= MAX_CHAR_VALUE)) {
+            chars.addChar(charsToAdd.charAt(FIRST_CHAR_RANGE_INDEX));
         } else {
             throw new InvalidParamsException(ADD_COMMAND_INCORRECT_FORMAT_ERROR_MSG);
         }
@@ -335,16 +377,17 @@ public class Shell {
      * @throws InvalidParamsException if the parameters provided are invalid.
      */
     private void removeChar(String charsToRemove) throws InvalidParamsException {
-        if (charsToRemove.equals("all")) {
+        if (charsToRemove.equals(ADD_ALL_PARAM)) {
             for (int i = MIN_CHAR_VALUE; i < MAX_CHAR_VALUE; i++) {
                 chars.removeChar((char) i);
             }
-        } else if (charsToRemove.equals("space")) {
+        } else if (charsToRemove.equals(ADD_SPACE_PARAM)) {
             chars.removeChar(' ');
         } else if (isCharRange(charsToRemove)) {
             addRemoveCharRange(charsToRemove, false);
-        } else if (charsToRemove.length() == 1 && (isInCharRange(charsToRemove.charAt(0)))) {
-            chars.removeChar(charsToRemove.charAt(0));
+        } else if (charsToRemove.length() == 1 &&
+                (isInCharRange(charsToRemove.charAt(FIRST_CHAR_RANGE_INDEX)))) {
+            chars.removeChar(charsToRemove.charAt(FIRST_CHAR_RANGE_INDEX));
         } else {
             throw new InvalidParamsException(REMOVE_COMMAND_INCORRECT_FORMAT_ERROR_MSG);
         }
@@ -358,13 +401,13 @@ public class Shell {
      */
     private void changeImgResolution(String changeResolutionCommand) throws InvalidParamsException {
         int minCharsInRow = Math.max(1, image.getWidth() / image.getHeight());
-        if (changeResolutionCommand.equals("up")) {
+        if (changeResolutionCommand.equals(UP_PARAM_RES_COMMAND)) {
             if ((imageResolution * CHANGE_RESOLUTION_FACTOR > image.getWidth()) ||
                     (imageResolution * CHANGE_RESOLUTION_FACTOR < minCharsInRow)) {
                 throw new InvalidParamsException(RES_COMMAND_BOUNDARIES_ERROR_MSG);
             }
             imageResolution *= CHANGE_RESOLUTION_FACTOR;
-        } else if (changeResolutionCommand.equals("down")) {
+        } else if (changeResolutionCommand.equals(DOWN_PARAM_RES_COMMAND)) {
             if ((imageResolution / CHANGE_RESOLUTION_FACTOR > image.getWidth()) ||
                     (imageResolution / CHANGE_RESOLUTION_FACTOR < minCharsInRow)) {
                 throw new InvalidParamsException(RES_COMMAND_BOUNDARIES_ERROR_MSG);
@@ -397,7 +440,7 @@ public class Shell {
     private void changeOutputMethod(String changeOutputCommand) {
         AsciiOutputFactory asciiOutputFactory = new AsciiOutputFactory();
         asciiOutput = asciiOutputFactory.createAsciiOutput(changeOutputCommand, new String[]{
-                "out.html", "Courier New"});
+                DEFAULT_HTML_FILENAME, DEFAULT_FONT});
     }
 
     /**
