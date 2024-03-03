@@ -450,4 +450,18 @@ public class Shell {
         AsciiArtAlgorithm asciiArtAlgorithm = new AsciiArtAlgorithm(image, imageResolution, chars);
         asciiOutput.out(asciiArtAlgorithm.run());
     }
+
+    /**
+     * Main function for running Shell application.
+     * @param args the params for the main function.
+     */
+
+    public static void main(String[] args) {
+        try{
+            Shell s = new Shell();
+            s.run();
+        } catch(IOException e) {
+            System.out.println(IMG_COMMAND_ERROR_MSG);
+        }
+    }
 }
