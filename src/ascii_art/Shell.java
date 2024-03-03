@@ -133,7 +133,7 @@ public class Shell {
     /**
      * Prompt string indicating user input.
      */
-    private static final String COMMAND_PROMPT_STRING = "<<< ";
+    private static final String COMMAND_PROMPT_STRING = ">>> ";
 
     /**
      * Index of the first character in a character range parameter.
@@ -416,7 +416,7 @@ public class Shell {
         } else {
             throw new InvalidParamsException(RES_COMMAND_INCORRECT_FORMAT_ERROR_MSG);
         }
-        System.out.println("Resolution set to " + Integer.toString(imageResolution));
+        System.out.println("Resolution set to " + Integer.toString(imageResolution)+".");
     }
 
     /**

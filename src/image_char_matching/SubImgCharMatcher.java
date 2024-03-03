@@ -33,6 +33,9 @@ public class SubImgCharMatcher {
      * @return the char with the closest brightness value to brightness from the char set
      */
     public char getCharByImageBrightness(double brightness) {
+        if(this.sortedCharBrightnessList.isEmpty()){
+            return 0;
+        }
         int right = this.sortedCharBrightnessList.size();
         int left = 0;
         // Binary search to find the character with brightness closest to the given brightness
@@ -117,6 +120,9 @@ public class SubImgCharMatcher {
      * Method to linearize the brightness list.
      */
     private void linearizeBrightnessList() {
+        if(this.sortedCharBrightnessList.isEmpty()){
+            return;
+        }
         // Update min and max brightness
         this.minBrightness = this.sortedCharBrightnessList.get(0).getNonLinearBrightness();
         this.maxBrightness = this.sortedCharBrightnessList.get(
