@@ -3,7 +3,7 @@ tamarwi,Roei.nathanzon
 
 Answers:
 1. Classes:
-Image-
+Image- A class that represents an image as a 2D Color array.
 ImageProcessing- A class for image processing operations.
 ConsoleAsciiOutput - Class that is responsible to output a 2D array of chars to the console.
 HtmlAsciiOutput-  Class that is responsible to output a 2D array of chars to an HTML file viewable in a web browser.
